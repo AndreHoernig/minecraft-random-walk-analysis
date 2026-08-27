@@ -19,7 +19,7 @@ Aqui neste README você encontra instruções introdutórias.
 
 3. Carregue o script no chat com o comando "/script load tracker".
 
-4. 4. O script começará a registrar a posição do mob a cada tick (20 vezes por segundo) e salvará os dados em um arquivo `dados_mob.txt`.
+4. O script começará a registrar a posição do mob a cada tick (20 vezes por segundo) e salvará os dados em um arquivo `dados_mob.txt`.
 
 5. Para interromper, utilize o comando "/script unload tracker", via chat do jogo.
 
@@ -27,8 +27,9 @@ Aqui neste README você encontra instruções introdutórias.
 
 6. O arquivo `dados_mob.txt` será salvo na mesma pasta onde o script foi colocado (dentro da pasta `scripts/` do mundo ou na pasta global).
 
----
-
 ### Análise dos dados com Python
 
 7. Salve o arquivo dados_mob.txt em algum local fácil de encontrar e comece a fazer as análises com Python. Os códigos que eu elaborei para o manuscrito da RBEF estão disponíveis para uso livre aqui no meu repositório no GitHub.
+
+
+Tendo dúvidas e interesse, sinta-se livre para entrar em contato via: andre.hoernig@gmail.com
