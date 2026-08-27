@@ -1,6 +1,6 @@
 # Análise do movimento de mobs no Minecraft como processo difusivo
 
-Este repositório contém os scripts e dados utilizados na investigação do movimento de um mob passivo no Minecraft como um processo difusivo.
+Este repositório contém os scripts utilizados na investigação do movimento de um mob passivo no Minecraft como um processo difusivo.
 Aqui neste README você encontra instruções introdutórias.
 
 ### Pré-requisitos
@@ -8,7 +8,8 @@ Aqui neste README você encontra instruções introdutórias.
 - Minecraft Java Edition
 - Fabric Loader
 - [Carpet Mod](https://github.com/gnembon/fabric-carpet)
-
+- Prims Launcher (opcional, é uma alternativa que roda bem o tracker)
+  
 ### Como usar o script `tracker.sc`
 
 1. Coloque o arquivo `tracker.sc` em uma das pastas:
@@ -29,7 +30,7 @@ Aqui neste README você encontra instruções introdutórias.
 
 ### Análise dos dados com Python
 
-7. Salve o arquivo dados_mob.txt em algum local fácil de encontrar e comece a fazer as análises com Python. Os códigos que eu elaborei para o manuscrito da RBEF estão disponíveis para uso livre aqui no meu repositório no GitHub.
+7. Salve o arquivo dados_mob.txt em algum local fácil de encontrar e comece a fazer as análises com Python (os arquivos "dados_mob.txt" e "analise_mob.py" precisam estar na mesma pasta). Os códigos que eu elaborei para o manuscrito da RBEF estão disponíveis para uso livre aqui no meu repositório no GitHub. Ao rodar o código, salvará as imagens na mesma pasta.
 
 
-Tendo dúvidas e interesse, sinta-se livre para entrar em contato via: andre.hoernig@gmail.com
+Tendo dúvidas e interesse, sinta-se livre para entrar em contato via: andre.hoernig@gmail.com.
