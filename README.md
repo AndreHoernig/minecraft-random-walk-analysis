@@ -8,7 +8,7 @@ Aqui neste README você encontra instruções introdutórias.
 - Minecraft Java Edition
 - Fabric Loader
 - [Carpet Mod](https://github.com/gnembon/fabric-carpet)
-- Prims Launcher (opcional, é uma alternativa que roda bem o tracker)
+- Prism Launcher (opcional, é uma alternativa que roda bem o tracker)
   
 ### Como usar o script `tracker.sc`
 
