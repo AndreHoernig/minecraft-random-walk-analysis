@@ -10,9 +10,7 @@ import matplotlib.pyplot as plt
 from scipy import stats
 from scipy.optimize import curve_fit
 
-# ============================================
 # 1. CONFIGURAÇÕES GLOBAIS
-# ============================================
 
 # Configurar estilo dos gráficos (opcional)
 plt.rcParams['font.size'] = 11
@@ -21,16 +19,14 @@ plt.rcParams['axes.labelsize'] = 11
 plt.rcParams['legend.fontsize'] = 10
 
 # Parâmetros ajustáveis
-NOME_ARQUIVO = 'dados_mob.txt'  # ← MUDE PARA O NOME DO SEU ARQUIVO
-WINDOW_SIZE = 60  # janela de tempo para médias (segundos) - AJUSTE SE QUISER
+NOME_ARQUIVO = 'dados_mob.txt'  # ← MUDAR PARA O NOME DO SEU ARQUIVO COM BASE NO SCRIPT SCAR.
+WINDOW_SIZE = 60  # janela de tempo para médias (segundos) - AJUSTAR SE FOR INTERESSANTE
 
 # Habilitar uso limpo de LaTeX/mathText no Matplotlib
 plt.rcParams['mathtext.fontset'] = 'stix'
 plt.rcParams['font.family'] = 'STIXGeneral'
 
-# ============================================
 # 2. CARREGAR OS DADOS
-# ============================================
 
 print("=" * 60)
 print("ANÁLISE DO MOVIMENTO DE MOBS NO MINECRAFT")
@@ -55,9 +51,7 @@ for col in colunas_esperadas:
 
 print(f"  Total de pontos coletados: {len(df)}")
 
-# ============================================
 # 3. PRÉ-PROCESSAMENTO
-# ============================================
 
 # Converter ticks para segundos (20 ticks = 1 segundo)
 df['tempo_seg'] = df['tick'] / 20.0
@@ -79,9 +73,8 @@ df['dx'] = df['pos_x'].diff()
 df['dz'] = df['pos_z'].diff()
 df['passo'] = np.sqrt(df['dx']**2 + df['dz']**2)
 
-# ============================================
 # 4. ESTATÍSTICAS DOS PASSOS
-# ============================================
+
 
 passos_validos = df['passo'].dropna()
 passos_validos = passos_validos[passos_validos > 0]  # remove pausas
@@ -94,9 +87,7 @@ print(f"  Mediana do passo: {passos_validos.median():.4f} blocos")
 print(f"  Desvio padrão: {passos_validos.std():.4f} blocos")
 print(f"  Número total de passos: {len(passos_validos)}")
 
-# ============================================
 # 5. ANÁLISE TEMPORAL (PAUSAS)
-# ============================================
 
 # Identificar quando o mob está parado (passo = 0 ou NaN)
 df['parado'] = (df['passo'] == 0) | (df['passo'].isna())
@@ -115,9 +106,7 @@ print(f"  Tempo total de coleta: {tempo_total:.1f} s ({tempo_total/60:.1f} min)"
 print(f"  Tempo efetivo em movimento: {tempo_movimento:.1f} s")
 print(f"  Fração do tempo parado: {fracao_parado:.1%}")
 
-# ============================================
 # 6. MÉDIAS POR JANELA PARA REGRESSÃO
-# ============================================
 
 # Definir janelas de tempo
 df['tempo_bin'] = (df['tempo_seg'] // WINDOW_SIZE) * WINDOW_SIZE
@@ -133,9 +122,7 @@ estatisticas = estatisticas[estatisticas['n'] >= 5].copy()
 print(f"\n  Janelas de tempo: {WINDOW_SIZE} s")
 print(f"  Número de janelas válidas: {len(estatisticas)}")
 
-# ============================================
 # 7. REGRESSÃO LINEAR PONDERADA (COM INCERTEZAS)
-# ============================================
 
 x = estatisticas['tempo'].values
 y = estatisticas['r2_mean'].values
@@ -181,9 +168,7 @@ except np.linalg.LinAlgError:
     print(f"  Coeficiente de difusão D = {slope:.3f} ± {slope_err:.3f} blocos²/s")
     print(f"  R²: {r2_weighted:.4f}")
 
-# ============================================
 # 8. GRÁFICO 1: TRAJETÓRIA
-# ============================================
 
 plt.figure(figsize=(8, 8))
 plt.plot(df['desloc_x'], df['desloc_z'], 'b-', linewidth=0.8, alpha=0.6)
@@ -200,9 +185,7 @@ plt.savefig('01_trajetoria_mob.png', dpi=150)
 plt.close()
 print("\n✓ Gráfico salvo: 01_trajetoria_mob.png")
 
-# ============================================
 # 9. GRÁFICO 2: r² vs TEMPO COM BARRAS DE ERRO (VERSÃO FINAL)
-# ============================================
 
 # Calcular o erro típico (para mostrar no gráfico)
 erro_medio = estatisticas['r2_sem'].mean()
@@ -237,9 +220,7 @@ plt.close()
 print(f"✓ Gráfico salvo: 02_r2_vs_tempo_com_erros.png")
 print(f"  Erro típico das médias: ± {erro_medio:.2f} blocos² (mediana: ± {erro_mediano:.2f})")
 
-# ============================================
 # 10. HISTOGRAMA DOS PASSOS: COMPLETO vs FILTRADO
-# ============================================
 
 import seaborn as sns
 from scipy.stats import skew
@@ -266,7 +247,7 @@ print(f"  Skewness filtrado: {skew_filtrado:.2f}")
 # Criar figura com dois subplots lado a lado
 fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
 
-# ===== FIGURA A: Dados completos (sem filtro) =====
+# ----------- FIGURA A: Dados completos (sem filtro) 
 sns.histplot(passos_validos, bins=50, kde=True, stat='density',
              color='steelblue', alpha=0.6, edgecolor='black', linewidth=0.5, ax=ax1)
 ax1.axvline(passos_validos.mean(), color='r', linestyle='--', linewidth=2,
@@ -283,7 +264,7 @@ ax1.set_title('(a) Distribuição completa\n(todos os passos)', fontsize=12)
 ax1.legend(loc='upper left')
 ax1.grid(True, alpha=0.3)
 
-# ===== FIGURA B: Dados filtrados (ℓ > limiar) =====
+# ---------- FIGURA B: Dados filtrados (ℓ > limiar) 
 sns.histplot(passos_filtrados, bins=30, kde=True, stat='density',
              color='steelblue', alpha=0.6, edgecolor='black', linewidth=0.5, ax=ax2)
 ax2.axvline(passos_filtrados.mean(), color='r', linestyle='--', linewidth=2,
@@ -305,9 +286,8 @@ plt.savefig('03_histograma_passos_comparacao.png', dpi=150)
 plt.close()
 print("✓ Gráfico salvo: 03_histograma_passos_comparacao.png (comparação lado a lado)")
 
-# ============================================
-# 11. GRÁFICO LOG-LOG - VERSÃO QUE FUNCIONAVA (SÓ LIMPEZA MÍNIMA)
-# ============================================
+
+# 11. GRÁFICO LOG-LOG - VERSÃO QUE FUNCIONA (SÓ LIMPEZA MÍNIMA)
 
 print("\n" + "=" * 60)
 print("GERANDO GRÁFICO LOG-LOG")
@@ -401,9 +381,8 @@ if len(log_data) >= 3:
 else:
     print(f"  ERRO: Apenas {len(log_data)} janelas com r2_mean > 0.5 (minimo 3)")
 
-# ============================================
+
 # 12. SALVAR RESULTADOS
-# ============================================
 
 # Salvar dados processados
 df.to_csv('dados_processados.csv', index=False)
@@ -411,7 +390,7 @@ print("\n✓ Dados processados salvos: dados_processados.csv")
 
 # Salvar estatísticas das janelas
 estatisticas.to_csv('estatisticas_janelas.csv', index=False)
-print("✓ Estatísticas das janelas salvas: estatisticas_janelas.csv")
+print("Estatísticas das janelas salvas: estatisticas_janelas.csv")
 
 # Criar um arquivo de resumo
 with open('resul_analise.txt', 'w', encoding='utf-8') as f:
@@ -436,10 +415,10 @@ with open('resul_analise.txt', 'w', encoding='utf-8') as f:
         f.write("Análise log-log:\n")
         f.write(f"  α = {slope_log:.4f} ± {std_err_log:.4f}\n")
 
-print("✓ Resumo salvo: resul_analise.txt")
+print("Resumo salvo: resul_analise.txt")
 
 print("\n" + "=" * 60)
-print("ANÁLISE CONCLUÍDA COM SUCESSO!")
+print("ANÁLISE CONCLUÍDA COM SUCESSO.")
 print("=" * 60)
 print("\nArquivos gerados:")
 print("  - 01_trajetoria_mob.png")
